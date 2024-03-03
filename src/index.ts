@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import tarefaRouter from './routers/tarefa-router';
-import {query} from './repositories/database';
 
 const PORT = process.env.PORT || 4000;
 const HOSTNAME = process.env.HOSTNAME || 'http://localhost';
@@ -11,7 +10,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', async (req, res) => {
-    const data = await query('select * from tb_tarefa');
+    const data = `Api Rest Gerenciador de tarefas: <br>
+    Listar todas as tarefas - /api/tarefas <br>
+    Pegar uma tarefa - /api/tarefa/id`;
     res.send(data);
 });
 
@@ -22,7 +23,7 @@ app.use(cors({
 }));
 
 app.use((req, res) => {
-    res.status(404).send('Not Found');
+    res.status(404).send('Rota não encontrada');
 });
 
 app.listen(PORT, () => {

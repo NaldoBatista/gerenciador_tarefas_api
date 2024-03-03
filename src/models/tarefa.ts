@@ -1,6 +1,6 @@
 type Tarefa = {
     id?: number
-    nome: string
+    titulo: string
     descricao: string
 }
 
