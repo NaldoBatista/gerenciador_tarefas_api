@@ -1,5 +1,6 @@
 import express from 'express';
 import Tarefa from '../models/tarefa';
+import { TarefaRepository } from '../repositories/TarefaRepository';
 
 const tarefaRouter = express.Router();
 
@@ -7,26 +8,15 @@ tarefaRouter.post('/tarefa', (req, res) => {
     res.send('Adiciona tarefa');
 });
 
-tarefaRouter.get('/tarefas', (req, res) => {
-    const tarefas: Tarefa[] = [
-        {
-            id: 1,
-            nome: 'tarefa 1',
-            descricao: 'descriçãao 1'
-        },
-        {
-            id: 2,
-            nome: 'tarefa 2',
-            descricao: 'descrição 2'
-        }
-    ];
-
+tarefaRouter.get('/tarefas', async (req, res) => {
+    const tarefas = await TarefaRepository.listarTarefas()
     res.json(tarefas);
 });
 
-tarefaRouter.get('/tarefa/:id', (req, res) => {
-    const id: number = +req.params.id; 
-    res.send('lista uma tarefa pelo id');
+tarefaRouter.get('/tarefa/:id', async (req, res) => {
+    const id: string  = req.params.id;
+    const tarefa = await TarefaRepository.pegarTarefa(id);
+    res.json(tarefa);
 });
 
 tarefaRouter.put('/tarefa/:id', (req, res) => {
