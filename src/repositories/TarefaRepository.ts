@@ -1,29 +1,33 @@
-//import { Database } from './database';
-import { Database } from './Database';
 import Tarefa from '../models/tarefa';
+import { MySqlDatabase } from './MySqlDatabase';
 
 export class TarefaRepository {
-    static async save(tarefa: Tarefa): Promise<any> {
+    private database;
+
+    constructor() {
+        this.database = new MySqlDatabase();
+    }
+
+    public async save(tarefa: Tarefa): Promise<any> {
         const sql: string = `insert into tb_tarefa (titulo, descricao)
         values (?, ?)`;
 
         const params: any[] = [tarefa.titulo, tarefa.descricao];
-
-        return await Database.query(sql, params);
+        return await this.database.executeSql(sql, params);
     }
 
-    static async findAll(): Promise<any> {
+    public async findAll(): Promise<any> {
         const sql: string = "select * from tb_tarefa";
-        return await Database.query(sql);
+        return await this.database.executeSql(sql);
     }
 
-    static async findById(id: number): Promise<any> {
+    public async findOne(id: number): Promise<any> {
         const sql: string = `select * from tb_tarefa where id = ?`;
         const params: any[] = [id]; 
-        return await Database.query(sql, params);
+        return await this.database.executeSql(sql, params);
     }
 
-    static async update(tarefa: Tarefa): Promise<any> {
+    public async update(tarefa: Tarefa): Promise<any> {
         const sql: string = `update tb_tarefa
         set titulo = ?, descricao = ?
         where id = ?`;
@@ -34,12 +38,12 @@ export class TarefaRepository {
             tarefa.id
         ];
 
-        return await Database.query(sql, params);
+        return await this.database.executeSql(sql, params);
     }
 
-    static async delete(id: number): Promise<any> {
+    public async delete(id: number): Promise<any> {
         const sql: string = 'delete from tb_tarefa where id = ?';
         const params: any[] = [id];
-        return await Database.query(sql, params);
+        return await this.database.executeSql(sql, params);
     }
 }

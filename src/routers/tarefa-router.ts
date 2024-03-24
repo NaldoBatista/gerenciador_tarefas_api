@@ -2,11 +2,12 @@ import express from 'express';
 import { TarefaController } from '../controller/TarefaController';
 
 const tarefaRouter = express.Router();
+const tarefaController = new TarefaController();
 
-tarefaRouter.post('/tarefa', TarefaController.save);
-tarefaRouter.get('/tarefas', TarefaController.findAll);
-tarefaRouter.get('/tarefa/:id', TarefaController.findById);
-tarefaRouter.put('/tarefa/:id', TarefaController.update);
-tarefaRouter.delete('/tarefa/:id', TarefaController.delete);
+tarefaRouter.post('/tarefa', tarefaController.save);
+tarefaRouter.get('/tarefas', tarefaController.findAll);
+tarefaRouter.get('/tarefa/:id', tarefaController.findOne);
+tarefaRouter.put('/tarefa/:id', tarefaController.update);
+tarefaRouter.delete('/tarefa/:id', tarefaController.delete);
 
 export default tarefaRouter;
